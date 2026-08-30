@@ -1,4 +1,4 @@
-# LoL-League_off-Limits
+# LoL-League-off-Limits
 A Chromium extension that strictly prevents accidental downloads of Riot Games and League of Legends installers.
 
 Are you tired of accidentally installing League on your PC just to get depressed or disappointed in humanity as you immediately lose 5 games in a row while getting yelled at by the jungler?
