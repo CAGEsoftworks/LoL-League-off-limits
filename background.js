@@ -2,15 +2,12 @@ const strictKeywords = [
   "riotgames.com", "leagueoflegends.com", "playvalorant.com", 
   "2xko.com", "vanguard", "riotclient"
 ];
-
 function handleRiotDetection(downloadId, matchReason) {
   if (downloadId) {
     chrome.downloads.cancel(downloadId, () => {
       console.log(`[Blocked] Cancelled download ID ${downloadId} via: ${matchReason}`);
     });
   }
-
-  // Increment temptation counter in storage
   chrome.storage.local.get({ temptationCount: 0 }, (data) => {
     const newCount = data.temptationCount + 1;
     chrome.storage.local.set({ temptationCount: newCount }, () => {
@@ -21,17 +18,13 @@ function handleRiotDetection(downloadId, matchReason) {
     });
   });
 }
-
-// 1. Intercept direct download attempts
 chrome.downloads.onCreated.addListener((downloadItem) => {
   const url = (downloadItem.url || "").toLowerCase();
   const finalUrl = (downloadItem.finalUrl || "").toLowerCase();
   const filename = (downloadItem.filename || "").toLowerCase();
-
   const matchFound = strictKeywords.some(keyword => 
     url.includes(keyword) || finalUrl.includes(keyword) || filename.includes(keyword)
   );
-
   if (
     matchFound || 
     filename.startsWith("install league") || 
@@ -42,8 +35,6 @@ chrome.downloads.onCreated.addListener((downloadItem) => {
     handleRiotDetection(downloadItem.id, "Initial ecosystem filter match");
   }
 });
-
-// 2. Intercept dynamic downloads when filename settles
 chrome.downloads.onChanged.addListener((delta) => {
   if (delta.filename && delta.filename.current) {
     const currentFilename = delta.filename.current.toLowerCase();
@@ -61,8 +52,6 @@ chrome.downloads.onChanged.addListener((delta) => {
     }
   }
 });
-
-// 3. Purge all open Riot tabs when survey completes
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "closeRiotTabs") {
     chrome.tabs.query({}, (tabs) => {
