@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "LoL - League Off Limits",
+  "version": "2.1",
+  "description": "Strictly prevents accidental downloads of Riot Games and League of Legends installers.",
+  "permissions": [
+    "downloads",
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "audio/audio.ogg",
+        "audio/audio2.ogg"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  }
+}
